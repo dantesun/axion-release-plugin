@@ -2,7 +2,6 @@ package pl.allegro.tech.build.axion.release.domain;
 
 import com.github.zafarkhaja.semver.ParseException;
 import com.github.zafarkhaja.semver.Version;
-import org.codehaus.groovy.runtime.StringGroovyMethods;
 import pl.allegro.tech.build.axion.release.domain.properties.NextVersionProperties;
 import pl.allegro.tech.build.axion.release.domain.properties.TagProperties;
 import pl.allegro.tech.build.axion.release.domain.properties.VersionProperties;
@@ -62,7 +61,8 @@ public class VersionFactory {
         boolean incrementVersion = ((versionProperties.isForceSnapshot() || hasChanges) && !proposedVersionIsAlreadySnapshot);
 
         Version finalVersion = version;
-        if (StringGroovyMethods.asBoolean(versionProperties.getForcedVersion())) {
+        String forcedVersion = versionProperties.getForcedVersion()
+        if (forcedVersion != null && !forcedVersion.isEmpty()) {
             finalVersion = Version.valueOf(versionProperties.getForcedVersion());
         } else if (incrementVersion) {
             finalVersion = versionProperties.getVersionIncrementer().call(new VersionIncrementerContext(
